@@ -6,3 +6,18 @@ Por el otro los desarrollos de:
   /arquitectura 
   /modelado
   /presentación
+
+
+# Como empezar
+
+Ejecutar en una consola
+
+```
+python setup.py develop
+```
+
+Luego desde cualquier jupyter notebook van a poder hacer esto
+
+```
+from mlp_mvp.transformers import CrewFeatures
+```
