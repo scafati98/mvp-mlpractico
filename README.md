@@ -59,3 +59,13 @@ Luego desde cualquier jupyter notebook van a poder hacer esto
 from mlp_mvp.transformers import CrewFeatures
 
 ```
+
+
+# Cómo contribuir?
+
+* Hacé un checkout del branch develop: `git checkout develop`
+* Asegurate de estar al día: `git pull origin HEAD`
+* Crea un branch nuevo con un nombre descriptivo. Si vas a hacer el modelo de rating podrías poner: `git checkout feature/rating_prediction`
+* Hacé tu trabajo pusheando en ese branch: `git push origin HEAD`
+* Crea un [pull request](https://github.com/pabloromero17143/mvp-mlpractico/pulls) de tu branch al branch `develop`
+* Para ver un pull requests de ejemplo mira [acá](https://github.com/pabloromero17143/mvp-mlpractico/pull/1)
