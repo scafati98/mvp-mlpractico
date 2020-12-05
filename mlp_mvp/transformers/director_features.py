@@ -1,5 +1,6 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
+import numpy as np
 
 
 class CrewFeatures(BaseEstimator, TransformerMixin):
@@ -54,3 +55,32 @@ class CrewFeatures(BaseEstimator, TransformerMixin):
 class DirectorFeatures(CrewFeatures):
     def __init__(self, min_cnt_movies=2):
         super().__init__(field='director', min_cnt_movies=min_cnt_movies)
+
+
+class W2VCrewFeatures(BaseEstimator, TransformerMixin):
+    def __init__(self, w2v, fields, min_cnt_movies=2):
+        self.fields = fields
+        self.min_cnt_movies = min_cnt_movies
+        self.w2v = w2v
+
+    def fit(self, X, y):
+        self.default_vector_ = np.mean(self.w2v.wv.vectors, axis=0)
+        return self
+
+    def _get_movie_vector(self, x_i):
+        vectors = []
+        for field in self.fields:
+            person_id = x_i[field]
+            if (person_id not in self.w2v.wv or
+                    self.w2v.wv.vocab[person_id].count < self.min_cnt_movies):
+                continue
+
+            vectors.append(self.w2v.wv[person_id])
+
+        if len(vectors) == 0:
+            return self.default_vector_
+        else:
+            return np.mean(vectors, axis=0)
+
+    def transform(self, X):
+        return np.asarray([self._get_movie_vector(x_i) for x_i in X])
