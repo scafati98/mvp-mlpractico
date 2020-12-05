@@ -1,5 +1,7 @@
-*.egg-info
+*.pyc
+__pycache__/
 data/*
 !data/.gitkeep
 .vscode
-__pycache__
+*.egg-info
+prediction_output/
