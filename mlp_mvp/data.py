@@ -3,6 +3,42 @@
 import numpy as np
 from pathlib import Path
 import pandas as pd
+import requests
+import gzip
+import shutil
+
+
+def download_imdb_datasets(path: Path):
+    url = "https://datasets.imdbws.com/"
+    datasets = [
+        'name.basics.tsv.gz',
+        'title.akas.tsv.gz',
+        'title.basics.tsv.gz',
+        'title.crew.tsv.gz',
+        'title.principals.tsv.gz',
+        'title.ratings.tsv.gz',
+    ]
+    for dataset in datasets:
+        dataset_url = url + dataset
+        target_path = path / dataset
+        tsv_output_path = path / dataset[:-3]
+
+        if tsv_output_path.exists():
+            print("Dataset ya disponible")
+            continue
+
+        response = requests.get(dataset_url, stream=True)
+        if response.status_code == 200:
+            print(f'Descargando {dataset}...')
+            with open(target_path, 'wb') as file:
+                file.write(response.raw.read())
+
+            print(f'Descomprimiendo {dataset}...')
+            with gzip.open(target_path, 'rb') as file_in:
+                with open(tsv_output_path, 'wb') as file_out:
+                    shutil.copyfileobj(file_in, file_out)
+        else:
+            print(f"Error en la descargar. Status code:{response.status_code}")
 
 
 def load_title_basics(path: Path):
@@ -107,3 +143,8 @@ def load_rating_train_dev_test(movies: pd.DataFrame, train_max_year=2015, dev_ma
     y_test = test_df.averageRating.values
 
     return dict(X_train=X_train, y_train=y_train, X_dev=X_dev, y_dev=y_dev, X_test=X_test, y_test=y_test)
+
+
+if __name__ == '__main__':
+    PATH = Path('data')
+    download_imdb_datasets(PATH)
