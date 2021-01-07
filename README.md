@@ -69,3 +69,5 @@ from mlp_mvp.transformers import CrewFeatures
 * Hacé tu trabajo pusheando en ese branch: `git push origin HEAD`
 * Crea un [pull request](https://github.com/pabloromero17143/mvp-mlpractico/pulls) de tu branch al branch `develop`
 * Para ver un pull requests de ejemplo mira [acá](https://github.com/pabloromero17143/mvp-mlpractico/pull/1)
+
+*
